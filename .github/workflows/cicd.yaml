@@ -38,12 +38,14 @@ jobs:
         step: test 
         enable-archivista: true
         enable-sigstore: true
+        timestamp-servers: https://freetsa.org/tsr"
         command: make test
  
     - name: Format 
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: fmt 
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make fmt
@@ -52,6 +54,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: vet
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make vet
@@ -60,6 +63,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: sast
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make sast
@@ -68,6 +72,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: lint
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make lint
@@ -76,6 +81,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: build 
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make build 
@@ -87,6 +93,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: docker-build
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make docker-build
@@ -132,6 +139,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: generate-sbom
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make generate-sbom
@@ -140,6 +148,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: secret-scan
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make secret-scan
@@ -148,6 +157,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: cve-scan
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make cve-scan
@@ -172,6 +182,7 @@ jobs:
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: release
+        timestamp-servers: https://freetsa.org/tsr"
         enable-archivista: true
         enable-sigstore: true
         command: make release
