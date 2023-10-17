@@ -87,55 +87,6 @@
           }
         ]
       },
-      "lint": {
-        "name": "lint",
-        "attestations": [
-          {
-            "type": "https://witness.dev/attestations/environment/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/git/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/material/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/command-run/v0.1",
-            "regopolicies": [
-              {
-                "name": "expected command",
-                "module": "cGFja2FnZSBjb21tYW5kcnVuLmNtZAoKZGVueVttc2ddIHsKCWlucHV0LmNtZCAhPSBbIi9iaW4vc2giLCAiLWMiLCAiaGFkb2xpbnQgLWYgc2FyaWYgRG9ja2VyZmlsZSA+IHJlbGVhc2UvZXZpZGVuY2UvaGFkb2xpbnQuc2FyaWYiXQoJbXNnIDo9ICJ1bmV4cGVjdGVkIGNtZCIKfQ=="
-              }
-            ]
-          },
-          {
-            "type": "https://witness.dev/attestations/product/v0.1"
-          }
-        ],
-        "functionaries": [
-          {
-            "type": "root",
-            "certConstraint": {
-              "commonname": "*",
-              "dnsnames": [
-                "*"
-              ],
-              "emails": [
-                "*"
-              ],
-              "organizations": [
-                "*"
-              ],
-              "uris": [
-                "*"
-              ],
-              "roots": [
-                "dcf166eebe7cbd9760947a88213d94e656349c647d439569dc76a275f05b7159"
-              ]
-            }
-          }
-        ]
-      },
       "sast": {
         "name": "sast",
         "attestations": [
