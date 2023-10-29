@@ -1,0 +1,153 @@
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+name: pipeline
+
+on:
+  push:
+    branches: [ "main", "feat/witness-run-action" ]
+  pull_request:
+    branches: [ "main", "feat/witness-run-action" ]
+
+jobs:
+  fmt:
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: 
+      attestations: "github"
+      command: go fmt ./...
+
+  vet:
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: vet
+      attestations: "github"
+      command: go vet ./...
+
+  lint:
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: lint
+      attestations: "github sarif"
+      pre-command: |
+        curl -sSfL https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -o /usr/local/bin/hadolint && \
+        chmod +x /usr/local/bin/hadolint
+      command: hadolint -f sarif Dockerfile > hadolint.sarif
+      artifact-upload-name: hadolint.sarif
+      artifact-upload-path: hadolint.sarif
+
+  unit-test:
+    needs: [ fmt, vet, lint ]
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: unit-test
+      attestations: "github"
+      command: go test ./... -coverprofile cover.out
+      artifact-upload-name: cover.out
+      artifact-upload-path: cover.out
+
+  sast:
+    needs: [ fmt, vet, lint ]
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: sast
+      attestations: "github, sarif"
+      pre-command: python3 -m pip install semgrep
+      command: semgrep scan --config auto ./ --sarif -o semgrep.sarif
+      artifact-upload-name: semgrep.sarif
+      artifact-upload-path: semgrep.sarif
+
+  build:
+    needs: [ unit-test, sast ]
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: build 
+      attestations: "github"
+      command: go build -o bin/software main.go 
+  
+  build-image:
+    needs: [ unit-test, sast ]
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v4.1.1
+    - uses: docker/setup-buildx-action@v3.0.0
+        
+    - name: Build Image
+      uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
+      with:
+        step: build-image
+        attestations: "github oci"
+        command: |
+          /bin/sh -c "docker build -t jkjell/software:dev . && docker save jkjell/software:dev > /tmp/image.tar"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: image.tar
+        path: /tmp/image.tar
+  
+  generate-sbom:
+    needs: build-image
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: generate-sbom 
+      attestations: "github"
+      artifact-download: image.tar
+      pre-command: |
+        curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+      command: |
+        syft packages docker-archive:/tmp/image.tar -o spdx-json --file syft.spdx.json
+      artifact-upload-name: syft.spdx.json
+      artifact-upload-path: syft.spdx.json
+
+  cve-scan:
+    needs: build-image
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: cve-scan 
+      attestations: "github sarif"
+      artifact-download: image.tar
+      pre-command: |
+        curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+      command: |
+        grype docker-archive:/tmp/image.tar -o sarif --file grype.sarif
+      artifact-upload-name: grype.sarif
+      artifact-upload-path: grype.sarif
+
+  secret-scan:
+    needs: build-image
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: secret-scan
+      attestations: "github"
+      artifact-download: image.tar
+      pre-command: |
+        curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin
+      command: |
+        trufflehog docker --image=file:///tmp/image.tar -j > trufflehog.json
+      artifact-upload-name: trufflehog.json
+      artifact-upload-path: trufflehog.json
+
+  verify:
+    needs: [ generate-sbom, cve-scan, secret-scan]
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: verify 
+      attestations: "github"
+      pre-command: |
+        curl -sSfL https://github.com/testifysec/witness/releases/download/v0.1.14/witness_0.1.14_linux_amd64.tar.gz -o witness.tar.gz && \
+        tar -xzvf witness.tar.gz -C /usr/local/bin/ && rm ./witness.tar.gz
+      command: |
+        witness verify -p policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista -l debug
