@@ -1,13 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"github.com/common-nighthawk/go-figure"
 )
 
 func Hello() string {
-	return "Hello World!"
+	return "Hello KubeCon!"
 }
 
 func main() {
-	fmt.Println(Hello())
+	myFigure := figure.NewFigure(Hello(), "usaflag", true)
+	myFigure.Print()
 }
