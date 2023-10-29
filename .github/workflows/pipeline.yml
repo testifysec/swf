@@ -86,13 +86,13 @@ jobs:
         step: build-image
         attestations: "github oci"
         command: |
-          /bin/sh -c "docker build -t jkjell/software:dev . && docker save jkjell/software:dev > /tmp/image.tar"
+          /bin/sh -c "docker build -t jkjell/software:dev . && docker save jkjell/software:dev > image.tar"
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: image.tar
-        path: /tmp/image.tar
+        path: image.tar
   
   generate-sbom:
     needs: build-image
@@ -146,6 +146,7 @@ jobs:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: verify 
       attestations: "github"
+      artifact-download: image.tar
       pre-command: |
         curl -sSfL https://github.com/testifysec/witness/releases/download/v0.1.14/witness_0.1.14_linux_amd64.tar.gz -o witness.tar.gz && \
         tar -xzvf witness.tar.gz -C /usr/local/bin/ && rm ./witness.tar.gz
