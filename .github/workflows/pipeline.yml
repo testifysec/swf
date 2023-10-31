@@ -32,7 +32,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: lint
-      attestations: "github sarif"
+      attestations: "github"
       pre-command: |
         curl -sSfL https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -o /usr/local/bin/hadolint && \
         chmod +x /usr/local/bin/hadolint
@@ -57,7 +57,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: sast
-      attestations: "github, sarif"
+      attestations: "github"
       pre-command: python3 -m pip install semgrep==1.45.0
       command: semgrep scan --config auto ./ --sarif -o semgrep.sarif
       artifact-upload-name: semgrep.sarif
@@ -115,7 +115,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: cve-scan 
-      attestations: "github sarif"
+      attestations: "github"
       artifact-download: image.tar
       pre-command: |
         curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
