@@ -117,7 +117,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: dev ${{ steps.meta.outputs.tags }}
+        tags: ${{ steps.meta.outputs.tags }}
   
   generate-sbom:
     needs: build-image
