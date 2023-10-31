@@ -75,11 +75,20 @@ jobs:
   build-image:
     needs: [ unit-test, sast ]
     runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
   
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: docker/setup-buildx-action@v3.0.0
-        
+    
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/testifysec/swf/software
+
     - name: Build Image
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
@@ -95,15 +104,18 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Docker Push
-      run: |
-        docker push ghcr.io/testifysec/swf/software:dev
-
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: image.tar
         path: image.tar
+
+    - name: Docker Push
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: dev ${{ steps.meta.outputs.tags }}
   
   generate-sbom:
     needs: build-image
