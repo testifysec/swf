@@ -87,6 +87,92 @@
           }
         ]
       },
+      "lint": {
+        "name": "lint",
+        "attestations": [
+          {
+            "type": "https://witness.dev/attestations/environment/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/git/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/material/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/command-run/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/product/v0.1"
+          }
+        ],
+        "functionaries": [
+          {
+            "type": "root",
+            "certConstraint": {
+              "commonname": "*",
+              "dnsnames": [
+                "*"
+              ],
+              "emails": [
+                "*"
+              ],
+              "organizations": [
+                "*"
+              ],
+              "uris": [
+                "*"
+              ],
+              "roots": [
+                "dcf166eebe7cbd9760947a88213d94e656349c647d439569dc76a275f05b7159"
+              ]
+            }
+          }
+        ]
+      },
+      "unit-test": {
+        "name": "unit-test",
+        "attestations": [
+          {
+            "type": "https://witness.dev/attestations/environment/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/git/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/material/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/command-run/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/product/v0.1"
+          }
+        ],
+        "functionaries": [
+          {
+            "type": "root",
+            "certConstraint": {
+              "commonname": "*",
+              "dnsnames": [
+                "*"
+              ],
+              "emails": [
+                "*"
+              ],
+              "organizations": [
+                "*"
+              ],
+              "uris": [
+                "*"
+              ],
+              "roots": [
+                "dcf166eebe7cbd9760947a88213d94e656349c647d439569dc76a275f05b7159"
+              ]
+            }
+          }
+        ]
+      },
       "sast": {
         "name": "sast",
         "attestations": [
@@ -130,51 +216,8 @@
           }
         ]
       },
-      "test": {
-        "name": "test",
-        "attestations": [
-          {
-            "type": "https://witness.dev/attestations/environment/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/git/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/material/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/command-run/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/product/v0.1"
-          }
-        ],
-        "functionaries": [
-          {
-            "type": "root",
-            "certConstraint": {
-              "commonname": "*",
-              "dnsnames": [
-                "*"
-              ],
-              "emails": [
-                "*"
-              ],
-              "organizations": [
-                "*"
-              ],
-              "uris": [
-                "*"
-              ],
-              "roots": [
-                "dcf166eebe7cbd9760947a88213d94e656349c647d439569dc76a275f05b7159"
-              ]
-            }
-          }
-        ]
-      },
-      "docker-build": {
-        "name": "docker-build",
+      "build-image": {
+        "name": "build-image",
         "attestations": [
           {
             "type": "https://witness.dev/attestations/environment/v0.1"

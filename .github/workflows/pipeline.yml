@@ -141,6 +141,8 @@ jobs:
 
   verify:
     needs: [ generate-sbom, cve-scan, secret-scan]
+
+    if: ${{ github.event_name == 'push' }}
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
