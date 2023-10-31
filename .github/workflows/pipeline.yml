@@ -15,7 +15,7 @@ jobs:
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
-      step: 
+      step: fmt
       attestations: "github"
       command: go fmt ./...
 
