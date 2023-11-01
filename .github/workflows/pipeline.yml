@@ -97,7 +97,7 @@ jobs:
         step: build-image
         attestations: "git github environment oci"
         command: |
-          /bin/sh -c "docker build -t ${{ steps.meta.outputs.tags }} . && docker save ${{ steps.meta.outputs.tags }} > image.tar"
+          /bin/sh -c "docker build -t ${{ steps.meta.outputs.tags }} --push . && docker save ${{ steps.meta.outputs.tags }} > image.tar"
 
     - name: Docker Login
       uses: docker/login-action@v3
