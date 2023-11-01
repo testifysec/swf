@@ -91,6 +91,13 @@ jobs:
       with:
         images: ghcr.io/testifysec/swf/software
 
+    - name: Docker Login
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Build Image
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
@@ -98,13 +105,6 @@ jobs:
         attestations: "git github environment oci"
         command: |
           /bin/sh -c "docker build -t ${{ steps.meta.outputs.tags }} --push . && docker save ${{ steps.meta.outputs.tags }} > image.tar"
-
-    - name: Docker Login
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
