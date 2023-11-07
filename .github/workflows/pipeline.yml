@@ -133,7 +133,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: generate-sbom 
-      attestations: "git github environment"
+      attestations: "git github environment oci"
       artifact-download: image.tar
       pre-command: |
         curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
