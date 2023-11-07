@@ -104,7 +104,7 @@ jobs:
         step: build-image
         attestations: "git github environment oci"
         command: |
-          /bin/sh -c "docker build -t ${{ steps.meta.outputs.tags }} --push . && docker save ${{ steps.meta.outputs.tags }} > image.tar"
+          /bin/sh -c "docker build --platform=linux/arm64,linux/amd64 -t ${{ steps.meta.outputs.tags }} --push . && docker save ${{ steps.meta.outputs.tags }} > image.tar"
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
