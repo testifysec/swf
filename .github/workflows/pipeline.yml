@@ -102,6 +102,8 @@ jobs:
       uses: docker/setup-buildx-action@v3
       with:
         platforms: linux/amd64,linux/arm64
+        install: true
+        use: true
 
     - name: Build Image
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
@@ -109,7 +111,7 @@ jobs:
         step: build-image
         attestations: "git github environment oci"
         command: |
-          /bin/sh -c "docker build --platform=linux/arm64,linux/amd64 -t ${{ steps.meta.outputs.tags }} --push . && docker save ${{ steps.meta.outputs.tags }} > image.tar"
+          /bin/sh -c "docker buildx build -t ${{ steps.meta.outputs.tags }} --push . && docker save ${{ steps.meta.outputs.tags }} > image.tar"
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
