@@ -111,20 +111,21 @@ jobs:
         step: build-image
         attestations: "git github environment oci"
         command: |
-          /bin/sh -c "docker buildx build -t ${{ steps.meta.outputs.tags }} --push -o type=docker,dest=- . > image.tar"
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: image.tar
-        path: image.tar
-
-    - name: Docker Push
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
+          /bin/sh -c "docker buildx build -t ${{ steps.meta.outputs.tags }} --push"
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+          
+  save-image:
+    needs: build-image
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: generate-sbom 
+      attestations: "git github environment"
+      command: |
+        docker pull ${{ needs.build-image.outputs.tags }} && docker save ${{ needs.build-image.outputs.tags }} -o image.tar
+      artifact-upload-name: image.tar
+      artifact-upload-path: image.tar
   
   generate-sbom:
     needs: build-image
