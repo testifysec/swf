@@ -111,7 +111,7 @@ jobs:
         step: build-image
         attestations: "git github environment oci"
         command: |
-          /bin/sh -c "docker buildx build -t ${{ steps.meta.outputs.tags }} --push"
+          /bin/sh -c "docker buildx build -t ${{ steps.meta.outputs.tags }} --push ."
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
           
@@ -128,7 +128,7 @@ jobs:
       artifact-upload-path: image.tar
   
   generate-sbom:
-    needs: build-image
+    needs: save-image
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
@@ -143,7 +143,7 @@ jobs:
       artifact-upload-path: syft.spdx.json
 
   cve-scan:
-    needs: build-image
+    needs: save-image
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
@@ -158,7 +158,7 @@ jobs:
       artifact-upload-path: grype.sarif
 
   secret-scan:
-    needs: build-image
+    needs: save-image
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
