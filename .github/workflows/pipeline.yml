@@ -75,27 +75,60 @@ jobs:
   build-image:
     needs: [ unit-test, sast ]
     runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      id-token: write # This is required for requesting the JWT
+      contents: read  # This is required for actions/checkout
   
     steps:
     - uses: actions/checkout@v4.1.1
     - uses: docker/setup-buildx-action@v3.0.0
-        
+    
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/testifysec/swf/software
+
+    - name: Docker Login
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        platforms: linux/amd64,linux/arm64
+        install: true
+        use: true
+
     - name: Build Image
       uses: testifysec/witness-run-action@40aa4ef36fc431a37de7c3faebcb66513c03b934
       with:
         step: build-image
-        attestations: "git github environment oci"
+        attestations: "git github environment"
         command: |
-          /bin/sh -c "docker build -t jkjell/software:dev . && docker save jkjell/software:dev > image.tar"
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: image.tar
-        path: image.tar
+          /bin/sh -c "docker buildx build -t ${{ steps.meta.outputs.tags }} --push . > build-image-output"
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+          
+  save-image:
+    needs: build-image
+    uses: ./.github/workflows/witness.yml
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: generate-sbom 
+      attestations: "git github environment"
+      command: |
+        docker pull ${{ needs.build-image.outputs.tags }} && docker save ${{ needs.build-image.outputs.tags }} -o image.tar
+      artifact-upload-name: image.tar
+      artifact-upload-path: image.tar
   
   generate-sbom:
-    needs: build-image
+    needs: save-image
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
@@ -110,7 +143,7 @@ jobs:
       artifact-upload-path: syft.spdx.json
 
   cve-scan:
-    needs: build-image
+    needs: save-image
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
@@ -125,7 +158,7 @@ jobs:
       artifact-upload-path: grype.sarif
 
   secret-scan:
-    needs: build-image
+    needs: save-image
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
