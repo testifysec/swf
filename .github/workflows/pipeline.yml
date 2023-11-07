@@ -121,7 +121,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: generate-sbom 
-      attestations: "git github environment"
+      attestations: "git github environment oci"
       command: |
         docker pull ${{ needs.build-image.outputs.tags }} && docker save ${{ needs.build-image.outputs.tags }} -o image.tar
       artifact-upload-name: image.tar
@@ -133,7 +133,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: generate-sbom 
-      attestations: "git github environment oci"
+      attestations: "git github environment"
       artifact-download: image.tar
       pre-command: |
         curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
