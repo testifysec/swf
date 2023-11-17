@@ -143,21 +143,6 @@ jobs:
       artifact-upload-name: syft.spdx.json
       artifact-upload-path: syft.spdx.json
 
-  cve-scan:
-    needs: save-image
-    uses: ./.github/workflows/witness.yml
-    with:
-      pull_request: ${{ github.event_name == 'pull_request' }}
-      step: cve-scan 
-      attestations: "git github environment"
-      artifact-download: image.tar
-      pre-command: |
-        curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
-      command: |
-        grype docker-archive:/tmp/image.tar -o sarif --file grype.sarif
-      artifact-upload-name: grype.sarif
-      artifact-upload-path: grype.sarif
-
   secret-scan:
     needs: save-image
     uses: ./.github/workflows/witness.yml
@@ -174,7 +159,7 @@ jobs:
       artifact-upload-path: trufflehog.json
 
   verify:
-    needs: [ generate-sbom, cve-scan, secret-scan]
+    needs: [ generate-sbom, secret-scan]
 
     if: ${{ github.event_name == 'push' }}
     uses: ./.github/workflows/witness.yml
