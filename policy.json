@@ -100,7 +100,13 @@
             "type": "https://witness.dev/attestations/material/v0.1"
           },
           {
-            "type": "https://witness.dev/attestations/command-run/v0.1"
+            "type": "https://witness.dev/attestations/command-run/v0.1",
+            "regopolicies": [
+              {
+                "name": "expected command",
+                "module": "cGFja2FnZSBjb21tYW5kcnVuLmNtZAoKZGVueVttc2ddIHsKCWlucHV0LmNtZCAhPSBbIi9iaW4vc2giLCAiLWMiLCAiaGFkb2xpbnQgLWYgc2FyaWYgRG9ja2VyZmlsZSA+IHJlbGVhc2UvZXZpZGVuY2UvaGFkb2xpbnQuc2FyaWYiXQoJbXNnIDo9ICJ1bmV4cGVjdGVkIGNtZCIKfQ=="
+              }
+            ]
           },
           {
             "type": "https://witness.dev/attestations/product/v0.1"
