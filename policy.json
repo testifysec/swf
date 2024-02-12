@@ -104,7 +104,7 @@
             "regopolicies": [
               {
                 "name": "expected command",
-                "module": "cGFja2FnZSBjb21tYW5kcnVuLmNtZAoKZGVueVttc2ddIHsKCWlucHV0LmNtZCAhPSBbIi9iaW4vc2giLCAiLWMiLCAiaGFkb2xpbnQgLWYgc2FyaWYgRG9ja2VyZmlsZSA+IHJlbGVhc2UvZXZpZGVuY2UvaGFkb2xpbnQuc2FyaWYiXQoJbXNnIDo9ICJ1bmV4cGVjdGVkIGNtZCIKfQ=="
+                "module": "cGFja2FnZSBjb21tYW5kcnVuLmNtZAoKZGVueVttc2ddIHsKCWlucHV0LmNtZCAhPSBbIi9iaW4vc2giLCAiLWMiLCAiaGFkb2xpbnQgLWYgc2FyaWYgRG9ja2VyZmlsZSA+IHJlbGVhc2UvZXZpZGVuY2UvaGFkb2xpbnQuc2FyaWYiXQoJbXNnIDo9ICJ1bmV4cGVjdGVkIGNtZCIKfQo="
               }
             ]
           },
