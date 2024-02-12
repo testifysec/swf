@@ -121,7 +121,7 @@ jobs:
     uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
-      step: generate-sbom 
+      step: save-image 
       attestations: "git github environment oci"
       command: |
         docker pull ${{ needs.build-image.outputs.tags }} && docker save ${{ needs.build-image.outputs.tags }} -o image.tar
