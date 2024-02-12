@@ -107,7 +107,7 @@ jobs:
         use: true
 
     - name: Build Image
-      uses: testifysec/witness-run-action@11204d6c012fcc3763f64c5d20a7135fb63e21d6 # v0.1.4
+      uses: testifysec/witness-run-action@2ae7f93c013ccf24b8ff52b4f042b32ca95ec7b8 # v0.1.5
       with:
         step: build-image
         attestations: "git github environment"
