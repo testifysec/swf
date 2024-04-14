@@ -110,7 +110,7 @@ jobs:
       uses: testifysec/witness-run-action@2ae7f93c013ccf24b8ff52b4f042b32ca95ec7b8 # v0.1.5
       with:
         step: build-image
-        attestations: "git github environment"
+        attestations: "git github environment slsa"
         command: |
           /bin/sh -c "docker buildx build --platform linux/amd64,linux/arm64 -t ${{ steps.meta.outputs.tags }} --push ."
     outputs:
@@ -122,7 +122,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: save-image 
-      attestations: "git github environment oci"
+      attestations: "git github environment slsa oci"
       command: |
         docker pull ${{ needs.build-image.outputs.tags }} && docker save ${{ needs.build-image.outputs.tags }} -o image.tar
       artifact-upload-name: image.tar
@@ -184,7 +184,7 @@ jobs:
       attestations: "git github environment"
       artifact-download: image.tar
       pre-command: |
-        curl -sSfL https://github.com/in-toto/witness/releases/download/v0.1.14/witness_0.1.14_linux_amd64.tar.gz -o witness.tar.gz && \
+        curl -sSfL https://github.com/in-toto/witness/releases/download/v0.4.0-beta/witness_0.4.0-beta_linux_amd64.tar.gz -o witness.tar.gz && \
         tar -xzvf witness.tar.gz -C /usr/local/bin/ && rm ./witness.tar.gz
       command: |
         witness verify -p policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista -l debug
