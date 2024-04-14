@@ -1,0 +1,12 @@
+{
+  "name": "pipeline",
+  "sdk": "go",
+  "dependencies": [
+    {
+      "name": "witness",
+      "source": "../dagger-witness"
+    }
+  ],
+  "source": "dagger",
+  "engineVersion": "v0.10.2"
+}
