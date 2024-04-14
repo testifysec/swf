@@ -6,9 +6,11 @@ name: pipeline
 
 on:
   push:
-    branches: [ "main", "feat/witness-run-action" ]
+    branches:
+      - '*'
   pull_request:
-    branches: [ "main", "feat/witness-run-action" ]
+    branches:
+      - '*'
 
 jobs:
   fmt:
@@ -107,7 +109,7 @@ jobs:
         use: true
 
     - name: Build Image
-      uses: testifysec/witness-run-action@2ae7f93c013ccf24b8ff52b4f042b32ca95ec7b8 # v0.1.5
+      uses: testifysec/witness-run-action@9bb3541332161bc8bf76c36bcdaab56b8da8e171 # v0.2.0-beta
       with:
         step: build-image
         attestations: "git github environment slsa"
