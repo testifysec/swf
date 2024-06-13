@@ -54,6 +54,7 @@ jobs:
             with:
               name: ${{ inputs.artifact-download }}
               path: /tmp
+              archivista-server: https://judge-api.aws-sandbox-staging.testifysec.dev
 
           - if: ${{ inputs.pre-command != '' && inputs.pull_request == false }}
             uses: testifysec/witness-run-action@2ae7f93c013ccf24b8ff52b4f042b32ca95ec7b8 # v0.1.5
@@ -61,6 +62,7 @@ jobs:
               step: pre-${{ inputs.step }}
               attestations: ${{ inputs.attestations }}
               command: /bin/sh -c "${{ inputs.pre-command }}"
+              archivista-server: https://judge-api.aws-sandbox-staging.testifysec.dev
           - if: ${{ inputs.pre-command != '' && inputs.pull_request == true }}
             run: ${{ inputs.pre-command }}
 
@@ -70,6 +72,7 @@ jobs:
               step: ${{ inputs.step }}
               attestations: ${{ inputs.attestations }}
               command: /bin/sh -c "${{ inputs.command }}"
+              archivista-server: https://judge-api.aws-sandbox-staging.testifysec.dev
           - if: ${{ inputs.pull_request == true }}
             run: ${{ inputs.command }}
 
@@ -78,3 +81,4 @@ jobs:
             with:
               name: ${{ inputs.artifact-upload-name }}
               path: ${{ inputs.artifact-upload-path }}
+              archivista-server: https://judge-api.aws-sandbox-staging.testifysec.dev
