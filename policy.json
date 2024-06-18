@@ -42,10 +42,10 @@
               ],
               "extensions": {
                 "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
                 "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
                 "runner_environment": "github-hosted"
               }
             }
@@ -90,7 +90,15 @@
               ],
               "roots": [
                 "dcf166eebe7cbd9760947a88213d94e656349c647d439569dc76a275f05b7159"
-              ]
+              ],
+              "extensions": {
+                "issuer": "https://token.actions.githubusercontent.com",
+                "source_repository_uri": "https://github.com/testifysec/swf",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
+                "runner_environment": "github-hosted"
+              }
             }
           }
         ]
@@ -142,10 +150,10 @@
               ],
               "extensions": {
                 "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
                 "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
                 "runner_environment": "github-hosted"
               }
             }
@@ -193,10 +201,10 @@
               ],
               "extensions": {
                 "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
                 "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
                 "runner_environment": "github-hosted"
               }
             }
@@ -244,10 +252,10 @@
               ],
               "extensions": {
                 "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
                 "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
                 "runner_environment": "github-hosted"
               }
             }
@@ -298,10 +306,10 @@
               ],
               "extensions": {
                 "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
                 "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
                 "runner_environment": "github-hosted"
               }
             }
@@ -352,10 +360,10 @@
               ],
               "extensions": {
                 "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
                 "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
                 "runner_environment": "github-hosted"
               }
             }
@@ -403,61 +411,10 @@
               ],
               "extensions": {
                 "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
                 "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
-                "runner_environment": "github-hosted"
-              }
-            }
-          }
-        ]
-      },
-      "cve-scan": {
-        "name": "cve-scan",
-        "attestations": [
-          {
-            "type": "https://witness.dev/attestations/environment/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/git/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/material/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/command-run/v0.1"
-          },
-          {
-            "type": "https://witness.dev/attestations/product/v0.1"
-          }
-        ],
-        "functionaries": [
-          {
-            "type": "root",
-            "certConstraint": {
-              "commonname": "*",
-              "dnsnames": [
-                "*"
-              ],
-              "emails": [
-                "*"
-              ],
-              "organizations": [
-                "*"
-              ],
-              "uris": [
-                "*"
-              ],
-              "roots": [
-                "dcf166eebe7cbd9760947a88213d94e656349c647d439569dc76a275f05b7159"
-              ],
-              "extensions": {
-                "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
-                "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
                 "runner_environment": "github-hosted"
               }
             }
@@ -505,10 +462,10 @@
               ],
               "extensions": {
                 "issuer": "https://token.actions.githubusercontent.com",
-                "github_workflow_sha": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
                 "source_repository_uri": "https://github.com/testifysec/swf",
-                "build_signer_uri": "https://github.com/testifysec/swf/.github/workflows/witness.yml@refs/heads/slsa",
-                "build_signer_digest": "39f80b4c173e7b023a19d2aeac2686733c67b38e",
+                "build_signer_uri": "https://github.com/testifysec/witness-run-action/.github/workflows/witness.yml@refs/heads/reusable-workflow",
+                "build_signer_digest": "d66f89ec8539398ed9904d1a622bd0303bfe384c",
+                "build_config_uri": "https://github.com/testifysec/swf/.github/workflows/pipeline.yml@refs/heads/slsa",
                 "runner_environment": "github-hosted"
               }
             }
