@@ -160,6 +160,23 @@ jobs:
       artifact-upload-name: trufflehog.json
       artifact-upload-path: trufflehog.json
 
+  verify-pr:
+    needs: [ generate-sbom, secret-scan]
+    
+    if: ${{ github.event_name == 'push' }}
+    uses: testifysec/witness-run-action/.github/workflows/witness.yml@reusable-workflow
+    with:
+      pull_request: ${{ github.event_name == 'pull_request' }}
+      step: verify
+      pre-command-attestations: "git github environment"
+      attestations: "git github environment"
+      artifact-download: image.tar
+      pre-command: |
+        curl -sSfL https://github.com/jkjell/witness/releases/download/osff-demo/witness -o /tmp/witness && \
+        chmod +x /tmp/witness
+      command: |
+        /tmp/witness verify -p pr-policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista -l debug
+
   verify:
     needs: [ generate-sbom, secret-scan]
 
