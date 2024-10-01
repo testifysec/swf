@@ -421,16 +421,28 @@
           }
         ]
       },
-      "webhook": {
-        "name": "webhook",
+      "pull_request_review": {
+        "name": "pull_request_review",
         "attestations": [
           {
             "type": "https://witness.dev/attestations/githubwebhook/v0.1",
             "regopolicies": [
-              {
-                "name": "expected approval",
-                "module": "cGFja2FnZSBwcl9yZXZpZXcKCmRlbnlbbXNnXSB7CglpbnB1dC5ldmVudCAhPSAicHVsbF9yZXF1ZXN0X3JldmlldyIKCW1zZyA6PSAibm90IGEgcHIgcmV2aWV3Igp9CgpkZW55W21zZ10gewoJaW5wdXQucGF5bG9hZC5hY3Rpb24gIT0gInN1Ym1pdHRlZCIKCW1zZyA6PSAibm90IGEgc3VibWl0dGVkIHByIgp9CgpkZW55W21zZ10gewoJaW5wdXQucGF5bG9hZC5yZXZpZXcuc3RhdGUgIT0gImFwcHJvdmVkIgoJbXNnIDo9ICJub3QgYW4gYXBwcm92ZWQgcHIiCn0K"
-              }
+            ]
+          }
+        ],
+        "functionaries": [
+          {
+            "type": "publickey",
+            "publickeyid": "6516d0812cb5a0d01f7f014f88e04c5d4c2d89a64e788a12950ba950fb43ef45"
+          }
+        ]
+      },
+      "pull_request": {
+        "name": "pull_request",
+        "attestations": [
+          {
+            "type": "https://witness.dev/attestations/githubwebhook/v0.1",
+            "regopolicies": [
             ]
           }
         ],
