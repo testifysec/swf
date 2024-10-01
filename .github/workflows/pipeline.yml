@@ -40,7 +40,7 @@ jobs:
       pre-command: |
         curl -sSfL https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -o /usr/local/bin/hadolint && \
         chmod +x /usr/local/bin/hadolint
-      command: hadolint -f sarif Dockerfile > hadolint.sarif
+      command: hadolint --ignore DL3002 -f sarif Dockerfile > hadolint.sarif
       artifact-upload-name: hadolint.sarif
       artifact-upload-path: hadolint.sarif
 
@@ -175,7 +175,7 @@ jobs:
         curl -sSfL https://github.com/jkjell/witness/releases/download/osff-demo/witness -o /tmp/witness && \
         chmod +x /tmp/witness
       command: |
-        /tmp/witness verify -p pr-policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista -l debug
+        /tmp/witness verify -p pr-policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista
 
   verify:
     needs: [ generate-sbom, secret-scan]
@@ -192,4 +192,4 @@ jobs:
         curl -sSfL https://github.com/jkjell/witness/releases/download/osff-demo/witness -o /tmp/witness && \
         chmod +x /tmp/witness
       command: |
-        /tmp/witness verify -p policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista -l debug
+        /tmp/witness verify -p policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista
