@@ -420,6 +420,32 @@
             }
           }
         ]
+      },
+      "webhook": {
+        "name": "webhook",
+        "attestations": [
+          {
+            "type": "https://witness.dev/attestations/githubwebhook/v0.1",
+            "regopolicies": [
+              {
+                "name": "expected approval",
+                "module": "cGFja2FnZSBwcl9yZXZpZXcKCmRlbnlbbXNnXSB7CglpbnB1dC5ldmVudCAhPSAicHVsbF9yZXF1ZXN0X3JldmlldyIKCW1zZyA6PSAibm90IGEgcHIgcmV2aWV3Igp9CgpkZW55W21zZ10gewoJaW5wdXQucGF5bG9hZC5hY3Rpb24gIT0gInN1Ym1pdHRlZCIKCW1zZyA6PSAibm90IGEgc3VibWl0dGVkIHByIgp9CgpkZW55W21zZ10gewoJaW5wdXQucGF5bG9hZC5yZXZpZXcuc3RhdGUgIT0gImFwcHJvdmVkIgoJbXNnIDo9ICJub3QgYW4gYXBwcm92ZWQgcHIiCn0K"
+              }
+            ]
+          }
+        ],
+        "functionaries": [
+          {
+            "type": "publickey",
+            "publickeyid": "6516d0812cb5a0d01f7f014f88e04c5d4c2d89a64e788a12950ba950fb43ef45"
+          }
+        ]
+      }
+    },
+    "publickeys": {
+      "6516d0812cb5a0d01f7f014f88e04c5d4c2d89a64e788a12950ba950fb43ef45": {
+        "keyid": "6516d0812cb5a0d01f7f014f88e04c5d4c2d89a64e788a12950ba950fb43ef45",
+        "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF2YWhyQUpDNXNlY2xuWElqQ2N4NgpKcGkxQW1lWW9FQVVmanlKR2I5cHpRQU4vT3BhcjZram1MOU9ja2pmdW1aSVlpbXo3Q2JqZ1d6VGsvOWF2U1BjCmZiazBQREdKcEpJTjhNZHB6UWs0aXlnKyt2NDY2ZUhDSXpyVExYcUJDR21Sa1hySFBJQklEazV5bkkweEV6anMKcUFGaEF6Y2tJVFZtY2V4TE40emhzOGlGcXRxZmVxS0VMM3NQUWZPT3BzTFZFcC9MR3h4K2VpdGZnL2ZPWU1pMwpkdUk3ODdNbGcwUC9SNWNwajRBeGJWd1N3T3hzeVBnTkZSS1Vpd013OVl6K21lcXl5RGROeDdncjB6V0lVaGt6ClBQUjgyMVNWM0ZOaHJjemNSR20ydyt1YzlDcis5VXBjTEFtL3MxOXV4YjB1VWk1eFRTRGRCVC80OFFvNjFSMVQKVVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg=="
       }
     },
     "roots": {
