@@ -1,34 +1,34 @@
-policy rego
-
-// lint commandrun cmd validation
+# lint commandrun cmd validation
 package commandrun.cmd
+
+import rego.v1
 
 deny[msg] {
 	input.cmd != ["/bin/sh", "-c", "hadolint -f sarif Dockerfile > hadolint.sarif"]
 	msg := "unexpected cmd"
 }
 
-// all github jwt validation
+# all github jwt validation
 package github.attributes
 
 import rego.v1
 
-deny[msg] if {
+deny[msg] {
 	input.jwt.claims.iss != "https://token.actions.githubusercontent.com"
 	msg := "unexpected issuer"
 }
 
-deny[msg] if {
+deny[msg] {
 	input.projecturl != "https://github.com/testifysec/swf"
 	msg := "unexpected projecturl"
 }
 
-deny[msg] if {
+deny[msg] {
 	not startswith(input.jwt.claims.workflow_ref, "testifysec/swf/.github/workflows/pipeline.yml")
 	msg := "unexpected workflow_ref"
 }
 
-// webhook attestor PR approval
+# webhook attestor PR approval
 package pr_review
 
 deny[msg] {
