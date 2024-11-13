@@ -125,7 +125,7 @@ jobs:
     - name: Save Key
       env:
         ED_25519_PRIVATE_KEY: ${{ secrets.ED_25519_PRIVATE_KEY }}
-      run: echo $ED_25519_PRIVATE_KEY > /tmp/private.pem
+      run: echo "$ED_25519_PRIVATE_KEY" > /tmp/private.pem
 
     - name: Build Image
       uses: testifysec/witness-run-action@5f0d4d4b85d205ade1147258148e6d9751bbcb91 # v0.2.0
