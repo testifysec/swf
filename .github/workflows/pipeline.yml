@@ -132,7 +132,6 @@ jobs:
       with:
         version: 0.6.0
         step: build-image
-        archivista-server: "http://john-minikube-archivista:8082"
         attestations: "git github environment oci slsa"
         enable-sigstore: false
         key: /tmp/private.pem
