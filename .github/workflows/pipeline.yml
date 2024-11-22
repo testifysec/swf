@@ -1,6 +1,6 @@
 permissions:
   id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
+  contents: read # This is required for actions/checkout
 
 name: pipeline
 
@@ -18,8 +18,8 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: fmt
-      attestations: "git github environment"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"
+      attestations: 'git github environment'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       command: go fmt ./...
 
   vet:
@@ -27,19 +27,19 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: vet
-      attestations: "git github environment"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"
+      attestations: 'git github environment'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       command: go vet ./...
 
-  # --ignore DL3002    
+  # --ignore DL3002
   lint:
     uses: testifysec/witness-run-action/.github/workflows/witness.yml@reusable-workflow
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: lint
-      pre-command-attestations: "git github environment"
-      attestations: "git github environment"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"
+      pre-command-attestations: 'git github environment'
+      attestations: 'git github environment'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       pre-command: |
         curl -sSfL https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -o /usr/local/bin/hadolint && \
         chmod +x /usr/local/bin/hadolint
@@ -48,107 +48,107 @@ jobs:
       artifact-upload-path: hadolint.sarif
 
   unit-test:
-    needs: [ fmt, vet, lint ]
+    needs: [fmt, vet, lint]
     uses: testifysec/witness-run-action/.github/workflows/witness.yml@reusable-workflow
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: unit-test
-      attestations: "git github environment"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"
+      attestations: 'git github environment'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       command: go test ./... -coverprofile cover.out
       artifact-upload-name: cover.out
       artifact-upload-path: cover.out
 
   sast:
-    needs: [ fmt, vet, lint ]
+    needs: [fmt, vet, lint]
     uses: testifysec/witness-run-action/.github/workflows/witness.yml@reusable-workflow
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: sast
-      pre-command-attestations: "git github environment"
-      attestations: "git github environment"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"      
+      pre-command-attestations: 'git github environment'
+      attestations: 'git github environment'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       pre-command: python3 -m pip install semgrep==1.45.0
       command: semgrep scan --config auto ./ --sarif -o semgrep.sarif
       artifact-upload-name: semgrep.sarif
       artifact-upload-path: semgrep.sarif
 
   build:
-    needs: [ unit-test, sast ]
+    needs: [unit-test, sast]
     uses: testifysec/witness-run-action/.github/workflows/witness.yml@reusable-workflow
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
-      step: build 
-      attestations: "git github environment"
-      command: go build -o bin/software main.go 
-  
+      step: build
+      attestations: 'git github environment'
+      command: go build -o bin/software main.go
+
   build-image:
-    needs: [ unit-test, sast ]
+    needs: [unit-test, sast]
     runs-on: ubuntu-latest
 
     permissions:
       packages: write
       id-token: write # This is required for requesting the JWT
-      contents: read  # This is required for actions/checkout
-  
+      contents: read # This is required for actions/checkout
+
     steps:
-    - uses: actions/checkout@v4.1.1
-    - uses: docker/setup-buildx-action@v3.0.0
-    
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ghcr.io/testifysec/swf/software
+      - uses: actions/checkout@v4.1.1
+      - uses: docker/setup-buildx-action@v3.0.0
 
-    - name: Docker Login
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/testifysec/swf/software
 
-    - name: Setup Buildx
-      uses: docker/setup-buildx-action@v3
-      with:
-        platforms: linux/amd64,linux/arm64
-        install: true
-        use: true
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build Image
-      uses: testifysec/witness-run-action@reusable-workflow # v0.2.0
-      with:
-        version: 0.6.0
-        step: build-image
-        attestations: "git github environment slsa"
-        archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"        
-        command: |
-          /bin/sh -c "docker buildx build --platform linux/amd64,linux/arm64 -t ${{ steps.meta.outputs.tags }} --push ."
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+          install: true
+          use: true
+
+      - name: Build Image
+        uses: testifysec/witness-run-action@reusable-workflow # v0.2.0
+        with:
+          version: 0.6.0
+          step: build-image
+          attestations: 'git github environment slsa'
+          archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
+          command: |
+            /bin/sh -c "docker buildx build --platform linux/amd64,linux/arm64 -t ${{ steps.meta.outputs.tags }} --push ."
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
-          
+
   save-image:
     needs: build-image
     uses: testifysec/witness-run-action/.github/workflows/witness.yml@reusable-workflow
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: save-image
-      attestations: "git github environment slsa oci"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"      
+      attestations: 'git github environment slsa oci'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       command: |
         docker pull ${{ needs.build-image.outputs.tags }} && docker save ${{ needs.build-image.outputs.tags }} -o image.tar
       artifact-upload-name: image.tar
       artifact-upload-path: image.tar
-  
+
   generate-sbom:
     needs: save-image
     uses: testifysec/witness-run-action/.github/workflows/witness.yml@reusable-workflow
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
-      step: generate-sbom 
-      pre-command-attestations: "git github environment"
-      attestations: "git github environment sbom"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"      
+      step: generate-sbom
+      pre-command-attestations: 'git github environment'
+      attestations: 'git github environment sbom'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       artifact-download: image.tar
       pre-command: |
         curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
@@ -163,9 +163,9 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: secret-scan
-      pre-command-attestations: "git github environment"
-      attestations: "git github environment"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"      
+      pre-command-attestations: 'git github environment'
+      attestations: 'git github environment'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       artifact-download: image.tar
       pre-command: |
         curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin
@@ -175,19 +175,19 @@ jobs:
       artifact-upload-path: trufflehog.json
 
   verify:
-    needs: [ generate-sbom, secret-scan]
+    needs: [generate-sbom, secret-scan]
 
     if: ${{ github.event_name == 'push' }}
     uses: testifysec/witness-run-action/.github/workflows/witness.yml@reusable-workflow
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
-      step: verify 
-      pre-command-attestations: "git github environment"
-      attestations: "git github environment"
-      archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"      
+      step: verify
+      pre-command-attestations: 'git github environment'
+      attestations: 'git github environment'
+      archivista-server: 'https://archivista.aws-sandbox-staging.testifysec.dev'
       artifact-download: image.tar
       pre-command: |
         curl -sSfL https://github.com/in-toto/witness/releases/download/v0.6.0/witness_0.6.0_linux_amd64.tar.gz -o witness.tar.gz && \
         tar -xzvf witness.tar.gz -C /usr/local/bin/ && rm ./witness.tar.gz
       command: |
-        witness verify -p policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista --archivista-server https://judge-api.aws-sandbox-staging.testifysec.dev -l debug
+        witness verify -p policy-signed.json -k swfpublic.pem -f /tmp/image.tar --enable-archivista --archivista-server https://archivista.aws-sandbox-staging.testifysec.dev -l debug
