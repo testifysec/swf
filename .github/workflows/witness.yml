@@ -66,6 +66,7 @@ jobs:
             uses: testifysec/witness-run-action@79320a907f611f2fb40ced8e13c66af988b2d9db # v0.2.2
             with:
               version: 0.6.0
+              witness-install-dir: /usr/local/bin
               archivista-server: ${{ inputs.archivista-server }}
               step: pre-${{ inputs.step }}
               attestations: ${{ inputs.pre-command-attestations }}
@@ -77,6 +78,7 @@ jobs:
             uses: testifysec/witness-run-action@79320a907f611f2fb40ced8e13c66af988b2d9db # v0.2.2
             with:
               version: 0.6.0
+              witness-install-dir: /usr/local/bin
               archivista-server: ${{ inputs.archivista-server }}
               step: ${{ inputs.step }}
               attestations: ${{ inputs.attestations }}

@@ -114,6 +114,7 @@ jobs:
       uses: testifysec/witness-run-action@reusable-workflow # v0.2.0
       with:
         version: 0.6.0
+        witness-install-dir: /usr/local/bin
         step: build-image
         attestations: "git github environment oci slsa"
         command: |
