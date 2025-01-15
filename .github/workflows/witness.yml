@@ -44,7 +44,6 @@ on:
                 required: true
                 type: string
             archivista-server:
-                default: "https://archivista.aws-sandbox-staging.testifysec.dev/"
                 required: false
                 type: string
             
