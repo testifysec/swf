@@ -66,7 +66,7 @@ jobs:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: sast
       pre-command-attestations: "git github environment"
-      attestations: "git github environment"
+      attestations: "git github environment sarif"
       archivista-server: "https://judge-api.aws-sandbox-staging.testifysec.dev"      
       pre-command: python3 -m pip install semgrep==1.45.0
       command: semgrep scan --config auto ./ --sarif -o semgrep.sarif
