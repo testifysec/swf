@@ -387,6 +387,15 @@
           },
           {
             "type": "https://witness.dev/attestations/product/v0.1"
+          },
+          {
+            "type": "https://witness.dev/attestations/sbom/v0.1",
+            "aipolicies": [
+              {
+                "name": "Check SBOM for GPL-2.0",
+                "prompt": "Check SBOM for GPL-2.0 and fail if found"
+              }
+            ]
           }
         ],
         "functionaries": [
