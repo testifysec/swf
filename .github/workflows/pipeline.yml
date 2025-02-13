@@ -18,6 +18,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: fmt
+      archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
       attestations: "git github environment"
       command: go fmt ./...
 
@@ -26,6 +27,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: vet
+      archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
       attestations: "git github environment"
       command: go vet ./...
   
@@ -35,6 +37,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: lint
+      archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
       pre-command-attestations: "git github environment"
       attestations: "git github environment"
       pre-command: |
@@ -50,6 +53,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: unit-test
+      archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
       attestations: "git github environment"
       command: go test ./... -coverprofile cover.out
       artifact-upload-name: cover.out
@@ -61,6 +65,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: sast
+      archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
       pre-command-attestations: "git github environment"
       attestations: "git github environment"
       pre-command: python3 -m pip install semgrep==1.45.0
@@ -74,6 +79,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: build 
+      archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
       attestations: "git github environment"
       command: go build -o bin/software main.go 
 
@@ -116,9 +122,10 @@ jobs:
     - name: Build Image
       uses: testifysec/witness-run-action@reusable-workflow # v0.2.0
       with:
-        version: 0.6.0
+        version: 0.7.0
         witness-install-dir: /usr/local/bin
         step: build-image
+        archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
         attestations: "git github environment oci slsa"
         command: |
           /bin/sh -c "docker buildx build -t ${{ steps.meta.outputs.tags }} -o type=docker,dest=image.tar --push ."
@@ -138,6 +145,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: generate-sbom 
+      archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
       pre-command-attestations: "git github environment"
       attestations: "git github environment sbom"
       artifact-download: image.tar
@@ -154,6 +162,7 @@ jobs:
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: secret-scan
+      archivista-server: "https://judge.aws-sandbox-staging.testifysec.dev"
       pre-command-attestations: "git github environment"
       attestations: "git github environment"
       artifact-download: image.tar
