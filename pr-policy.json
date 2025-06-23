@@ -436,22 +436,6 @@
             "publickeyid": "6516d0812cb5a0d01f7f014f88e04c5d4c2d89a64e788a12950ba950fb43ef45"
           }
         ]
-      },
-      "pull_request": {
-        "name": "pull_request",
-        "attestations": [
-          {
-            "type": "https://witness.dev/attestations/githubwebhook/v0.1",
-            "regopolicies": [
-            ]
-          }
-        ],
-        "functionaries": [
-          {
-            "type": "publickey",
-            "publickeyid": "6516d0812cb5a0d01f7f014f88e04c5d4c2d89a64e788a12950ba950fb43ef45"
-          }
-        ]
       }
     },
     "publickeys": {
