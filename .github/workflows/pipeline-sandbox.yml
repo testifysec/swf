@@ -14,33 +14,34 @@ on:
 
 jobs:
   fmt:
-    uses: testifysec/witness-run-action/.github/workflows/witness.yml@v0.3.0
+    uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: fmt
       archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-      archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
       attestations: 'git github environment'
       command: go fmt ./...
+    secrets:
+      token: ${{ secrets.sandbox_witness_api_token }}
 
   vet:
-    uses: testifysec/witness-run-action/.github/workflows/witness.yml@v0.3.0
+    uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: vet
       archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-      archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
       attestations: 'git github environment'
       command: go vet ./...
+    secrets:
+      token: ${{ secrets.sandbox_witness_api_token }}
 
   # --ignore DL3002
   lint:
-    uses: testifysec/witness-run-action/.github/workflows/witness.yml@v0.3.0
+    uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: lint
       archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-      archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
       pre-command-attestations: 'git github environment'
       attestations: 'git github environment'
       pre-command: |
@@ -49,45 +50,50 @@ jobs:
       command: hadolint -f sarif Dockerfile > hadolint.sarif
       artifact-upload-name: hadolint.sarif
       artifact-upload-path: hadolint.sarif
+    secrets:
+      token: ${{ secrets.sandbox_witness_api_token }}
 
   unit-test:
     needs: [fmt, vet, lint]
-    uses: testifysec/witness-run-action/.github/workflows/witness.yml@v0.3.0
+    uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: unit-test
       archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-      archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
       attestations: 'git github environment'
       command: go test ./... -coverprofile cover.out
       artifact-upload-name: cover.out
       artifact-upload-path: cover.out
+    secrets:
+      token: ${{ secrets.sandbox_witness_api_token }}
 
   sast:
     needs: [fmt, vet, lint]
-    uses: testifysec/witness-run-action/.github/workflows/witness.yml@v0.3.0
+    uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: sast
       archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-      archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
       pre-command-attestations: 'git github environment'
       attestations: 'git github environment'
       pre-command: python3 -m pip install semgrep==1.45.0
       command: semgrep scan --config auto ./ --sarif -o semgrep.sarif
       artifact-upload-name: semgrep.sarif
       artifact-upload-path: semgrep.sarif
+    secrets:
+      token: ${{ secrets.sandbox_witness_api_token }}
 
   build:
     needs: [unit-test, sast]
-    uses: testifysec/witness-run-action/.github/workflows/witness.yml@v0.3.0
+    uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: build
       archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-      archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
       attestations: 'git github environment'
       command: go build -o bin/software main.go
+    secrets:
+      token: ${{ secrets.sandbox_witness_api_token }}
 
   build-image:
     needs: [unit-test, sast]
@@ -130,11 +136,10 @@ jobs:
         with:
           step: build-image
           archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-          archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
           attestations: 'git github environment oci slsa'
           command: |
             /bin/sh -c "docker buildx build -t ${{ steps.meta.outputs.tags }} -o type=docker,dest=image.tar --push ."
-
+    
       - name: Upload Artifact
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
         with:
@@ -146,12 +151,11 @@ jobs:
 
   generate-sbom:
     needs: build-image
-    uses: testifysec/witness-run-action/.github/workflows/witness.yml@v0.3.0
+    uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: generate-sbom
       archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-      archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
       pre-command-attestations: 'git github environment'
       attestations: 'git github environment sbom'
       artifact-download: image.tar
@@ -161,15 +165,16 @@ jobs:
         syft packages docker-archive:/tmp/image.tar --source-name=pkg:oci/testifysec/swf -o cyclonedx-json --file sbom.cdx.json
       artifact-upload-name: sbom.cdx.json
       artifact-upload-path: sbom.cdx.json
+    secrets:
+      token: ${{ secrets.sandbox_witness_api_token }}
 
   secret-scan:
     needs: build-image
-    uses: testifysec/witness-run-action/.github/workflows/witness.yml@v0.3.0
+    uses: ./.github/workflows/witness.yml
     with:
       pull_request: ${{ github.event_name == 'pull_request' }}
       step: secret-scan
       archivista-server: 'https://judge.aws-sandbox-staging.testifysec.dev'
-      archivista-headers: "Authorization: Token ${{ secrets.sandbox_witness_api_token }}"
       pre-command-attestations: 'git github environment'
       attestations: 'git github environment'
       artifact-download: image.tar
@@ -179,3 +184,5 @@ jobs:
         trufflehog docker --image=file:///tmp/image.tar -j > trufflehog.json
       artifact-upload-name: trufflehog.json
       artifact-upload-path: trufflehog.json
+    secrets:
+      token: ${{ secrets.sandbox_witness_api_token }}
